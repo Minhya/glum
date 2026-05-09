@@ -1,0 +1,20 @@
+[package]
+name = "glum-backend"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+tonic = "0.12"
+prost = "0.13"
+prost-types = "0.13"
+prost-validate = { version = "0.2", features = ["derive"] }
+sqlx = { version = "0.8", features = ["postgres", "runtime-tokio", "migrate", "uuid"] }
+serde = { version = "1", features = ["derive"] }
+uuid = { version = "1", features = ["v4"] }
+
+
+[build-dependencies]
+tonic-build = "0.12"
+prost-build = "0.14"
+prost-validate-build = "0.2"

@@ -25,3 +25,16 @@ npm-debug.log*
 
 # TypeScript build cache
 *.tsbuildinfo
+
+# Rust build output
+backend/target/
+
+# Secrets
+.env*
+*.pem
+*.key
+*.cert
+*.p12
+secrets.yaml
+secrets.yml
+backend/k8s/postgres-secret.yaml

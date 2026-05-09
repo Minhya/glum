@@ -1,0 +1,37 @@
+[tasks.build]
+description = "Build the Rust backend"
+run = "cargo build --manifest-path backend/Cargo.toml"
+
+[tasks.migrate]
+description = "Run SQLx migrations"
+run = "sqlx migrate run --database-url postgres://glum:changeme@localhost:5432/glum --source backend/migrations"
+
+[tasks."cluster:up"]
+description = "Create kind cluster and apply k8s manifests"
+run = """
+kind create cluster --name glum
+kubectl apply -f backend/k8s/
+"""
+
+[tasks."cluster:down"]
+description = "Tear down the kind cluster"
+run = "kind delete cluster --name glum"
+
+[tasks."cluster:status"]
+description = "Show status of all pods in the glum namespace"
+run = "kubectl get all -n glum"
+
+[tasks.dev]
+description = "Port-forward postgres and run the backend locally"
+run = """
+kubectl port-forward -n glum svc/postgres 5432:5432 &
+DATABASE_URL=postgres://glum:changeme@localhost:5432/glum cargo run --manifest-path backend/Cargo.toml
+"""
+
+[tasks."load-image"]
+description = "Build Docker image and load it into kind"
+run = """
+docker build -t glum-backend:latest backend/
+kind load docker-image glum-backend:latest --name glum
+kubectl rollout restart deployment/backend -n glum
+"""

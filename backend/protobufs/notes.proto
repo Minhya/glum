@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package glum;
+
+import "google/protobuf/timestamp.proto";
+
+message Note {
+  string id = 1;
+  string title = 2;
+  string content = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+}
+
+message CreateNoteRequest {
+  string title = 1;
+  string content = 2;
+}
+
+message GetNoteRequest {
+  string id = 1;
+}
+
+message UpdateNoteRequest {
+  string id = 1;
+  string title = 2;
+  string content = 3;
+}
+
+message DeleteNoteRequest {
+  string id = 1;
+}
+
+message ListNotesRequest {}
+
+message ListNotesResponse {
+  repeated Note notes = 1;
+}
+
+service Notes {
+  rpc CreateNote(CreateNoteRequest) returns (Note);
+  rpc GetNote(GetNoteRequest) returns (Note);
+  rpc ListNotes(ListNotesRequest) returns (ListNotesResponse);
+  rpc UpdateNote(UpdateNoteRequest) returns (Note);
+  rpc DeleteNote(DeleteNoteRequest) returns (DeleteNoteResponse);
+}
+
+message DeleteNoteResponse {
+  bool success = 1;
+}

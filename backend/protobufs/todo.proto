@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package glum;
+
+import "google/protobuf/timestamp.proto";
+
+enum Priority {
+  LOW = 0;
+  MEDIUM = 1;
+  HIGH = 2;
+}
+
+message Todo {
+  string id = 1;
+  string title = 2;
+  bool completed = 3;
+  Priority priority = 4;
+  optional google.protobuf.Timestamp due_date = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
+
+message CreateTodoRequest {
+  string title = 1;
+  Priority priority = 2;
+  optional google.protobuf.Timestamp due_date = 3;
+}
+
+message GetTodoRequest {
+  string id = 1;
+}
+
+message UpdateTodoRequest {
+  string id = 1;
+  string title = 2;
+  Priority priority = 3;
+  optional google.protobuf.Timestamp due_date = 4;
+}
+
+message ToggleTodoRequest {
+  string id = 1;
+}
+
+message DeleteTodoRequest {
+  string id = 1;
+}
+
+message DeleteTodoResponse {
+  bool success = 1;
+}
+
+message ListTodosRequest {}
+
+message ListTodosResponse {
+  repeated Todo todos = 1;
+}
+
+service Todos {
+  rpc CreateTodo(CreateTodoRequest) returns (Todo);
+  rpc GetTodo(GetTodoRequest) returns (Todo);
+  rpc ListTodos(ListTodosRequest) returns (ListTodosResponse);
+  rpc UpdateTodo(UpdateTodoRequest) returns (Todo);
+  rpc ToggleTodo(ToggleTodoRequest) returns (Todo);
+  rpc DeleteTodo(DeleteTodoRequest) returns (DeleteTodoResponse);
+}
