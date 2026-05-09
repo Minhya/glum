@@ -1,0 +1,27 @@
+﻿# Dependencies - files downloaded by npm install
+node_modules/
+
+# Expo build output - generated files when build the app
+.expo/
+dist/
+android/
+ios/
+
+# Environment variables - secrets like API keys
+.env
+.env.local
+.env.production
+
+# OS files - junk files operating system creates
+Thumbs.db
+Desktop.ini
+
+# Editor files - code editor's local settings
+.vscode/
+.idea/
+
+# npm debug logs - when npm crashes
+npm-debug.log*
+
+# TypeScript build cache
+*.tsbuildinfo

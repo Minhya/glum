@@ -1,0 +1,14 @@
+﻿{
+  "expo": {
+    "name": "glum",
+    "slug": "glum",
+    "version": "1.0.0",
+    "scheme": "glum",
+    "orientation": "portrait",
+    "platforms": ["android"],
+    "android": {
+      "package": "com.anna.glum"
+    },
+    "plugins": ["expo-router"]
+  }
+}
