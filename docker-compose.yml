@@ -1,0 +1,68 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: glum
+      POSTGRES_USER: glum
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U glum -d glum"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      DATABASE_URL: postgres://glum:${POSTGRES_PASSWORD:-changeme}@postgres:5432/glum
+      APP_JWT_SECRET: ${APP_JWT_SECRET:-dev-only-change-me-at-deploy-time}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      GOOGLE_REDIRECT_URI: ${GLUM_PUBLIC_URL:-http://localhost:4000}/auth/google/callback
+      WEB_URL: ${GLUM_PUBLIC_URL:-http://localhost:4000}/
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  envoy:
+    image: envoyproxy/envoy:v1.29-latest
+    command: ["-c", "/etc/envoy/envoy.yaml"]
+    volumes:
+      - ./deploy/envoy.yaml:/etc/envoy/envoy.yaml:ro
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./web
+    ports:
+      - "${WEB_PORT:-4000}:80"
+    depends_on:
+      - envoy
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+    environment:
+      GLUM_HOST: ${GLUM_HOST:-glum-app.duckdns.org}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - web
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  caddy-data:
+  caddy-config:

@@ -1,0 +1,4 @@
+{$GLUM_HOST} {
+    encode gzip
+    reverse_proxy web:80
+}
