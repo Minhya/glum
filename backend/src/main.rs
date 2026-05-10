@@ -1,6 +1,7 @@
 #![allow(clippy::result_large_err)] // tonic services conventionally return tonic::Status.
 
 use sqlx::PgPool;
+use sqlx::postgres::{PgConnectOptions, PgPoolOptions, PgSslMode};
 use std::sync::Arc;
 use tokio::net::TcpListener;
 use tonic::transport::Server;
@@ -29,9 +30,7 @@ use users::Users;
 
 #[tokio::main]
 async fn main() {
-    let pool = PgPool::connect(&std::env::var("DATABASE_URL").unwrap())
-        .await
-        .unwrap();
+    let pool = connect_pool().await;
     sqlx::migrate!("./migrations").run(&pool).await.unwrap();
 
     let jwt_secret = Arc::new(
@@ -67,4 +66,29 @@ async fn main() {
         result = grpc_server => result.unwrap(),
         result = auth_server => result.unwrap(),
     }
+}
+
+async fn connect_pool() -> PgPool {
+    if let Ok(database_url) = std::env::var("DATABASE_URL") {
+        return PgPool::connect(&database_url).await.unwrap();
+    }
+
+    let host = std::env::var("PGHOST").unwrap_or_else(|_| "localhost".to_string());
+    let port = std::env::var("PGPORT")
+        .ok()
+        .and_then(|port| port.parse::<u16>().ok())
+        .unwrap_or(5432);
+    let user = std::env::var("PGUSER").unwrap_or_else(|_| "glum".to_string());
+    let password = std::env::var("PGPASSWORD").unwrap_or_default();
+    let database = std::env::var("PGDATABASE").unwrap_or_else(|_| "glum".to_string());
+
+    let options = PgConnectOptions::new()
+        .host(&host)
+        .port(port)
+        .username(&user)
+        .password(&password)
+        .database(&database)
+        .ssl_mode(PgSslMode::Disable);
+
+    PgPoolOptions::new().connect_with(options).await.unwrap()
 }

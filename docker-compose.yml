@@ -17,7 +17,11 @@ services:
   backend:
     image: ${BACKEND_IMAGE:-ghcr.io/minhya/glum-backend:latest}
     environment:
-      DATABASE_URL: postgres://glum:${POSTGRES_PASSWORD:-changeme}@postgres:5432/glum
+      PGHOST: postgres
+      PGPORT: 5432
+      PGDATABASE: glum
+      PGUSER: glum
+      PGPASSWORD: ${POSTGRES_PASSWORD:-changeme}
       APP_JWT_SECRET: ${APP_JWT_SECRET:-dev-only-change-me-at-deploy-time}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
