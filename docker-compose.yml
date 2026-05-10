@@ -34,11 +34,9 @@ services:
     restart: unless-stopped
 
   envoy:
-    image: envoyproxy/envoy:v1.29-latest
+    image: ${ENVOY_IMAGE:-ghcr.io/minhya/glum-envoy:latest}
+    pull_policy: always
     command: ["-c", "/etc/envoy/envoy.yaml"]
-    configs:
-      - source: envoy_config
-        target: /etc/envoy/envoy.yaml
     depends_on:
       - backend
     restart: unless-stopped
@@ -53,14 +51,12 @@ services:
     restart: unless-stopped
 
   caddy:
-    image: caddy:2-alpine
+    image: ${CADDY_IMAGE:-ghcr.io/minhya/glum-caddy:latest}
+    pull_policy: always
     ports:
       - "${HTTPS_PORT:-8443}:443"
     environment:
       GLUM_HOST: ${GLUM_HOST:-glum-app.duckdns.org}
-    configs:
-      - source: caddy_config
-        target: /etc/caddy/Caddyfile
     volumes:
       - caddy-data:/data
       - caddy-config:/config
@@ -72,9 +68,3 @@ volumes:
   postgres-data:
   caddy-data:
   caddy-config:
-
-configs:
-  envoy_config:
-    file: ./deploy/envoy.yaml
-  caddy_config:
-    file: ./deploy/Caddyfile

@@ -23,6 +23,12 @@ jobs:
           - name: web
             image: glum-web
             context: web
+          - name: envoy
+            image: glum-envoy
+            context: deploy/envoy
+          - name: caddy
+            image: glum-caddy
+            context: deploy/caddy
 
     steps:
       - name: Checkout
