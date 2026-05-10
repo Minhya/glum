@@ -31,6 +31,11 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:3001/auth/health >/dev/null"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
     restart: unless-stopped
 
   envoy:
@@ -38,7 +43,8 @@ services:
     pull_policy: always
     command: ["-c", "/etc/envoy/envoy.yaml"]
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     restart: unless-stopped
 
   web:

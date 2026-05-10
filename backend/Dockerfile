@@ -11,8 +11,8 @@ RUN cargo build --release
 # Stage 2: minimal runtime image
 FROM debian:bookworm-slim
 
-# Required for TLS and HTTPS connections
-RUN apt-get update && apt-get install -y libssl3 ca-certificates && rm -rf /var/lib/apt/lists/*
+# Required for TLS/HTTPS connections and container health checks.
+RUN apt-get update && apt-get install -y libssl3 ca-certificates curl && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 

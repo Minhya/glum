@@ -1,4 +1,11 @@
 {$GLUM_HOST} {
     encode gzip
-    reverse_proxy web:80
+
+    handle /auth/* {
+        reverse_proxy backend:3001
+    }
+
+    handle {
+        reverse_proxy web:80
+    }
 }
