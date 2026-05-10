@@ -103,7 +103,6 @@ Edit `.env`:
 
 ```text
 WEB_PORT=4000
-HTTP_PORT=8080
 HTTPS_PORT=443
 GLUM_HOST=glum-app.duckdns.org
 GLUM_PUBLIC_URL=https://glum-app.duckdns.org
