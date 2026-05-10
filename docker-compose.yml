@@ -15,8 +15,7 @@ services:
     restart: unless-stopped
 
   backend:
-    build:
-      context: ./backend
+    image: ${BACKEND_IMAGE:-ghcr.io/minhya/glum-backend:latest}
     environment:
       DATABASE_URL: postgres://glum:${POSTGRES_PASSWORD:-changeme}@postgres:5432/glum
       APP_JWT_SECRET: ${APP_JWT_SECRET:-dev-only-change-me-at-deploy-time}
@@ -39,8 +38,7 @@ services:
     restart: unless-stopped
 
   web:
-    build:
-      context: ./web
+    image: ${WEB_IMAGE:-ghcr.io/minhya/glum-web:latest}
     ports:
       - "${WEB_PORT:-4000}:80"
     depends_on:
