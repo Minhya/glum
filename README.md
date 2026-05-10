@@ -125,6 +125,14 @@ Start it:
 docker compose up -d --build
 ```
 
+For local Compose builds from source, use the build override:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.build.yml up -d --build
+```
+
+The default `docker-compose.yml` uses prebuilt images from GitHub Container Registry so Portainer can deploy it without building images on the NAS.
+
 Open:
 
 ```text

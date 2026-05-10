@@ -1,0 +1,10 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    image: ${BACKEND_IMAGE:-ghcr.io/minhya/glum-backend:latest}
+
+  web:
+    build:
+      context: ./web
+    image: ${WEB_IMAGE:-ghcr.io/minhya/glum-web:latest}
