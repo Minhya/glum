@@ -16,6 +16,7 @@ services:
 
   backend:
     image: ${BACKEND_IMAGE:-ghcr.io/minhya/glum-backend:latest}
+    pull_policy: always
     environment:
       PGHOST: postgres
       PGPORT: 5432
@@ -43,6 +44,7 @@ services:
 
   web:
     image: ${WEB_IMAGE:-ghcr.io/minhya/glum-web:latest}
+    pull_policy: always
     ports:
       - "${WEB_PORT:-4000}:80"
     depends_on:
