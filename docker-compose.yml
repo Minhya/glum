@@ -4,9 +4,9 @@ services:
     environment:
       POSTGRES_DB: glum
       POSTGRES_USER: glum
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_PASSWORD: glum-internal-postgres
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data-v2:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U glum -d glum"]
       interval: 5s
@@ -22,7 +22,7 @@ services:
       PGPORT: 5432
       PGDATABASE: glum
       PGUSER: glum
-      PGPASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      PGPASSWORD: glum-internal-postgres
       APP_JWT_SECRET: ${APP_JWT_SECRET:-dev-only-change-me-at-deploy-time}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
@@ -65,6 +65,6 @@ services:
     restart: unless-stopped
 
 volumes:
-  postgres-data:
+  postgres-data-v2:
   caddy-data:
   caddy-config:
