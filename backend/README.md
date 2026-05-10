@@ -74,21 +74,25 @@ backend/
 
 ## API
 
-Runs on port `50051`. Services defined in `protobufs/`.
+Runs on port `3000`. Services defined in `protobufs/`.
 
 ### Notes
 
 - `CreateNote` — title (1–100 chars), content (1–10000 chars)
 - `GetNote` — by UUID
-- `ListNotes` — all notes
+- `ListNotes` — owned and shared notes, paginated
 - `UpdateNote` — by UUID
 - `DeleteNote` — by UUID
+- `ShareNote` — owner-only share grant by Keycloak user ID
+- `UnshareNote` — owner-only share removal by Keycloak user ID
 
 ### Todos
 
 - `CreateTodo` — title (1–100 chars), priority (LOW/MEDIUM/HIGH), optional due date
 - `GetTodo` — by UUID
-- `ListTodos` — all todos
+- `ListTodos` — owned and shared todos, paginated
 - `UpdateTodo` — by UUID
 - `ToggleTodo` — toggle completed by UUID
 - `DeleteTodo` — by UUID
+- `ShareTodo` — owner-only share grant by Keycloak user ID
+- `UnshareTodo` — owner-only share removal by Keycloak user ID
