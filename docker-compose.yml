@@ -4,7 +4,7 @@ services:
     environment:
       POSTGRES_DB: glum
       POSTGRES_USER: glum
-      POSTGRES_PASSWORD: glum-internal-postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
     volumes:
       - postgres-data-v2:/var/lib/postgresql/data
     healthcheck:
@@ -22,7 +22,7 @@ services:
       PGPORT: 5432
       PGDATABASE: glum
       PGUSER: glum
-      PGPASSWORD: glum-internal-postgres
+      PGPASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       APP_JWT_SECRET: ${APP_JWT_SECRET:-dev-only-change-me-at-deploy-time}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}

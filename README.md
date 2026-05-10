@@ -106,6 +106,7 @@ WEB_PORT=4000
 HTTPS_PORT=8443
 GLUM_HOST=glum-app.duckdns.org
 GLUM_PUBLIC_URL=https://glum-app.duckdns.org:8443
+POSTGRES_PASSWORD=change-this-password
 APP_JWT_SECRET=change-this-to-a-long-random-string
 GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=your-google-client-secret
