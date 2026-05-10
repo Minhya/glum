@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package glum;
+
+message User {
+  string id = 1;
+  string username = 2;
+  string email = 3;
+  string display_name = 4;
+}
+
+message ListUsersRequest {
+  string query = 1;
+  int32 limit = 2;
+}
+
+message ListUsersResponse {
+  repeated User users = 1;
+}
+
+service Users {
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
+}
