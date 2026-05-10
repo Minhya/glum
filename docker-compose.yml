@@ -32,7 +32,7 @@ services:
     image: envoyproxy/envoy:v1.29-latest
     command: ["-c", "/etc/envoy/envoy.yaml"]
     volumes:
-      - ./deploy/envoy.yaml:/etc/envoy/envoy.yaml:ro
+      - ./deploy:/etc/envoy:ro
     depends_on:
       - backend
     restart: unless-stopped
@@ -53,7 +53,7 @@ services:
     environment:
       GLUM_HOST: ${GLUM_HOST:-glum-app.duckdns.org}
     volumes:
-      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./deploy:/etc/caddy:ro
       - caddy-data:/data
       - caddy-config:/config
     depends_on:
