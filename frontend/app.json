@@ -1,4 +1,4 @@
-﻿{
+{
   "expo": {
     "name": "glum",
     "slug": "glum",
@@ -6,9 +6,19 @@
     "scheme": "glum",
     "orientation": "portrait",
     "platforms": ["android"],
+    "newArchEnabled": true,
     "android": {
-      "package": "com.anna.glum"
+      "package": "com.anna.glum",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true
     },
-    "plugins": ["expo-router"]
+    "plugins": [
+      "expo-router",
+      "expo-sqlite",
+      "expo-asset"
+    ]
   }
 }
