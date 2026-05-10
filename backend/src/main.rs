@@ -30,8 +30,11 @@ use users::Users;
 
 #[tokio::main]
 async fn main() {
+    println!("glum backend starting");
     let pool = connect_pool().await;
+    println!("connected to postgres");
     sqlx::migrate!("./migrations").run(&pool).await.unwrap();
+    println!("database migrations complete");
 
     let jwt_secret = Arc::new(
         std::env::var("APP_JWT_SECRET")
@@ -42,6 +45,7 @@ async fn main() {
     let users = Users::new(pool.clone());
     let auth_router = auth::router(auth::AuthConfig::from_env(pool.clone(), jwt_secret));
     let auth_listener = TcpListener::bind("0.0.0.0:3001").await.unwrap();
+    println!("auth server listening on 0.0.0.0:3001");
 
     let reflection = ReflectionBuilder::configure()
         .register_encoded_file_descriptor_set(glum::FILE_DESCRIPTOR_SET)
@@ -61,6 +65,7 @@ async fn main() {
         .add_service(UsersServer::with_interceptor(users, interceptor))
         .serve("0.0.0.0:3000".parse().unwrap());
     let auth_server = axum::serve(auth_listener, auth_router);
+    println!("grpc server listening on 0.0.0.0:3000");
 
     tokio::select! {
         result = grpc_server => result.unwrap(),

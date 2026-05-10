@@ -5,6 +5,10 @@
         reverse_proxy backend:3001
     }
 
+    handle /glum.* {
+        reverse_proxy envoy:8090
+    }
+
     handle {
         reverse_proxy web:80
     }
