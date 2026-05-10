@@ -48,7 +48,7 @@ services:
   caddy:
     image: caddy:2-alpine
     ports:
-      - "${HTTPS_PORT:-443}:443"
+      - "${HTTPS_PORT:-8443}:443"
     environment:
       GLUM_HOST: ${GLUM_HOST:-glum-app.duckdns.org}
     volumes:

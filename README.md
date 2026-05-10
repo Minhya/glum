@@ -103,9 +103,9 @@ Edit `.env`:
 
 ```text
 WEB_PORT=4000
-HTTPS_PORT=443
+HTTPS_PORT=8443
 GLUM_HOST=glum-app.duckdns.org
-GLUM_PUBLIC_URL=https://glum-app.duckdns.org
+GLUM_PUBLIC_URL=https://glum-app.duckdns.org:8443
 POSTGRES_PASSWORD=change-this-password
 APP_JWT_SECRET=change-this-to-a-long-random-string
 GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
@@ -115,7 +115,7 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 For Google OAuth, add this authorized redirect URI:
 
 ```text
-https://glum-app.duckdns.org/auth/google/callback
+https://glum-app.duckdns.org:8443/auth/google/callback
 ```
 
 Start it:
@@ -135,7 +135,7 @@ The default `docker-compose.yml` uses prebuilt images from GitHub Container Regi
 Open:
 
 ```text
-https://glum-app.duckdns.org
+https://glum-app.duckdns.org:8443
 ```
 
 The backend runs SQL migrations automatically on startup.
