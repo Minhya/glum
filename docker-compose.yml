@@ -53,12 +53,18 @@ services:
 
   caddy:
     image: caddy:2-alpine
+    command:
+      - caddy
+      - reverse-proxy
+      - --from
+      - ${GLUM_PUBLIC_URL:-https://glum-app.duckdns.org:8443}
+      - --to
+      - web:80
     ports:
       - "${HTTPS_PORT:-8443}:443"
     environment:
       GLUM_HOST: ${GLUM_HOST:-glum-app.duckdns.org}
     volumes:
-      - ./deploy:/etc/caddy:ro
       - caddy-data:/data
       - caddy-config:/config
     depends_on:
